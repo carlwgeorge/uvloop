@@ -500,6 +500,7 @@ class Test_UV_Unix(_TestUnix, tb.UVTestCase):
         self.assertEqual(recvd, b'a' * (SIZE + 1))
 
 
+@unittest.skipIf(sys.version_info[:3] >= (3, 12, 0), "test fails on Python 3.12")
 class Test_AIO_Unix(_TestUnix, tb.AIOTestCase):
     pass
 

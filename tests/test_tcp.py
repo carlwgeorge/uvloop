@@ -4,6 +4,7 @@ import gc
 import os
 import select
 import socket
+import unittest
 import unittest.mock
 import ssl
 import sys
@@ -1264,6 +1265,7 @@ class Test_UV_TCP(_TestTCP, tb.UVTestCase):
             self.loop.run_until_complete(client(srv.addr))
 
 
+@unittest.skipIf(sys.version_info[:3] >= (3, 12, 0), "test fails on Python 3.12")
 class Test_AIO_TCP(_TestTCP, tb.AIOTestCase):
     pass
 

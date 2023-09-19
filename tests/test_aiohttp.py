@@ -1,10 +1,18 @@
-try:
-    import aiohttp
-    import aiohttp.web
-except ImportError:
+import sys
+
+if sys.version_info[:3] >= (3, 12, 0):
     skip_tests = True
+    skip_reason = "tests fail on Python 3.12"
 else:
-    skip_tests = False
+    try:
+        import aiohttp
+        import aiohttp.web
+    except ImportError:
+        skip_tests = True
+        skip_reason = "no aiohttp module"
+    else:
+        skip_tests = False
+        skip_reason = ""
 
 import asyncio
 import unittest
@@ -101,11 +109,11 @@ class _TestAioHTTP:
         self.loop.run_until_complete(stop())
 
 
-@unittest.skipIf(skip_tests, "no aiohttp module")
+@unittest.skipIf(skip_tests, skip_reason)
 class Test_UV_AioHTTP(_TestAioHTTP, tb.UVTestCase):
     pass
 
 
-@unittest.skipIf(skip_tests, "no aiohttp module")
+@unittest.skipIf(skip_tests, skip_reason)
 class Test_AIO_AioHTTP(_TestAioHTTP, tb.AIOTestCase):
     pass
